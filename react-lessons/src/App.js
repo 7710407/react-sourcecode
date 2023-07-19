@@ -1,32 +1,24 @@
-import './App.css';
+import './styles/App.css';
 import { useState } from 'react';
-import Counter from './components/Counter';
-import ClassCounter from './components/ClassCounter';
-import Component1 from './components/Component1';
-import Component2 from './components/Component2';
-
+import PostList from './components/PostList';
 
 function App() {
-  const [foo, setFoo]= useState("zoo")
-  
+  const [posts, setPosts] = useState([
+    {id:1, title:'JS', body:'description1'},
+    {id:2, title:'React', body:'description2'},
+    {id:3, title:'Redux', body:'description3'}
+    ]);
+
+  const [posts2, setPosts1] = useState([
+    {id:1, title:'JS1', body:'description1'},
+    {id:2, title:'React1', body:'description2'},
+    {id:3, title:'Redux1', body:'description3'}
+    ]);
+
   return (
     <div className="App">
-      <Counter />
-      <ClassCounter />
-      <Component1 />
-      <Component2 />
-
-      <button onClick={() => {
-        setTimeout(() => {
-          setFoo("foo" + "Arsen")
-        }, 1000)}}>+</button>
-
-      <button onClick={() => {
-        setTimeout(() => {
-          setFoo("zoo" + "Rafo")
-        }, 2000)}}>-</button>
-
-      <h4>{foo}</h4>
+      <PostList posts={posts} title={"Post1"}/>
+      <PostList posts={posts2} title={"Post2"}/>
     </div>
   );
 }
