@@ -1,8 +1,7 @@
 import "./styles/App.css";
 import { useState } from "react";
 import PostList from "./components/PostList";
-import MyButton from "./UI/button/MyButton";
-import MyInput from "./UI/input/MyInput";
+import PostForm from "./components/PostForm";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -11,37 +10,23 @@ function App() {
     { id: 3, title: "Redux", body: "description3" },
   ]);
 
-  const [title, setTitle] = useState("1")
-  const [body, setBody] = useState("2")
-  const addNewPost = (e) => {
-    e.preventDefault();
-    const newPost = {
-      id: Date.now(),
-      title,
-      body,
-    };
+  const createPost = (newPost) => {
     setPosts([...posts, newPost])
-    setTitle('')
-    setBody('')
-    // console.log(newPost)
+  }
+
+  const removePost = (post) => {
+    setPosts(posts.filter((p) => p.id !== post.id))
   }
 
   return (
     <div className="App">
-      <form>
-        <MyInput 
-        onChange={(e)=>setTitle(e.target.value)} 
-        value={title} 
-        type='text' 
-        placeholder="post name" />
-        <MyInput 
-        onChange={(e)=>setBody(e.target.value)} 
-        value={body} 
-        type='text' 
-        placeholder="post description" />
-      <MyButton onClick={addNewPost}>Add</MyButton>
-      </form>
-      <PostList posts={posts} title={"Post1"} />
+      <PostForm cre={createPost} />
+      { posts.length !== 0 ? (
+        <PostList remove={removePost} posts={posts} title={"Post1"} />
+        )
+        : 
+        (<h1>No posts found</h1>)
+    }
     </div>
   );
 }
