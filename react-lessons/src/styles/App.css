@@ -5,8 +5,8 @@
 }
 
 #root {
-  display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .App {
@@ -49,4 +49,26 @@
 
 .page__current {
   border: 2px solid rgb(141, 201, 50);
+}
+
+.navbar {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background-color: rgb(140, 100, 140);
+}
+
+.navbar_links {
+  margin-left: auto;
+}
+
+.navbar_links > a {
+  margin-left: 25px;
+  text-decoration: none;
+}
+
+.post_btns {
+  display: flex;
 }
