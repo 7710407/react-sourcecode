@@ -1,5 +1,5 @@
 import "../styles/App.css"
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import PostList from "../components/PostList"
 import PostForm from "../components/PostForm"
 import PostFilter from "../components/PostFilter"
@@ -12,6 +12,8 @@ import { useFetching } from "../hooks/useFetching"
 import PostService from "../API/PostService"
 import { getPagesArray, getPageCount } from "../utils/pages"
 import Pagination from "../components/Pagination"
+import { useObserver } from "../hooks/useObserver"
+import MySelect from "../UI/select/MySelect"
 
 function Posts() {
   const [totalPages, setTotalPages] = useState(0)
@@ -24,7 +26,7 @@ function Posts() {
 
   const [fetchPosts, isPostLoading, postError] = useFetching(async (limit, page) => {
     const response = await PostService.getAll(limit, page);
-    setPosts(response.data)
+    setPosts([...posts, ...response.data])
     const totalCount = response.headers['x-total-count']
     setTotalPages(getPageCount(totalCount, limit))
     // setTotalPages(totalCount)
@@ -33,9 +35,13 @@ function Posts() {
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   useEffect(() => {
-    // setPage(page)
     fetchPosts(limit, page)
-  }, [])
+  }, [page])
+
+  const lastElement = useRef()
+  useObserver(lastElement, page < totalPages, isPostLoading, () => { 
+    setPage(page + 1)
+  })
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -48,7 +54,7 @@ function Posts() {
 
   const changePage = (page) => { 
     setPage(page)
-    fetchPosts(limit, page)
+    // fetchPosts(limit, page)
   }
   
   const { counter1:arsen, increment, decrement } = useCounter(5) 
@@ -63,9 +69,17 @@ function Posts() {
       <MyModal visible={modal} setVisible={setModal}><PostForm create={createPost} /></MyModal>
       
       <hr style={{ margin: "15px 0" }} />
-      <PostFilter filter={filter} setFilter={setFilter} />
+      <PostFilter
+        limit={limit}
+        setLimit={setLimit}
+        filter={filter}
+        setFilter={setFilter} />
       {postError && <h1>Something went wrong {postError}</h1>}
-      {isPostLoading ? (
+      <PostList
+      remove={removePost}
+      posts={sortedAndSearchedPosts}
+      title={"Posts about programming"} />
+      {isPostLoading && (
         <div style={{
           display: "flex", justifyContent: "center",
           marginTop: 50
@@ -73,13 +87,11 @@ function Posts() {
         >
           <Loader />
       </div>
-      ) : (          
-        <PostList
-        remove={removePost}
-        posts={sortedAndSearchedPosts}
-        title={"Posts about programming"} />
       )}
       <Pagination page={page} changePage={changePage} totalPages={totalPages} />
+      <div ref={lastElement} style={{ height: 20, backgroundColor: '#212' }}
+      >Observed Element
+      </div>
     </div>
   );
 }
