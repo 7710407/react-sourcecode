@@ -1,5 +1,8 @@
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
+// import { useState } from "react";
+import TodoForm from "./features/todos/TodoForm";
+import TodoList from "./features/todos/TodoList";
 
 function App() {
   const name = useSelector(function (state) {
@@ -13,7 +16,6 @@ function App() {
   });
 
   const dispatch = useDispatch();
-
   return (
     <>
       <h1>{name}</h1>
@@ -30,32 +32,33 @@ function App() {
         }}
       />
       <div>
-        dispatch({})<h1>{todo}</h1>
+        <h1>{todo}</h1>
         <h1>Todos</h1>
-        <input
-          type="text"
-          value={text}
-          onChange={(evt) => {
-            setText(e.target.value);
-          }}
-        />
-        <button
-          onClick={(evt) => {
-            debugger;
+        <TodoForm
+          onAdd={(text) => {
+            // setTodos([
+            //   ...todos,
+            //   { id: Math.random(), text: text, isCompleted: false },
+            // ]);
             dispatch({
-              type: "todo-add",
+              type: "add",
               payload: {
-                todo: {
-                  id: Math.random(),
-                  text: evt.target.value,
-                  isComplete: false,
-                },
+                text: text,
               },
             });
           }}
-        >
-          Add
-        </button>
+        />
+        <TodoList
+          todos={todo}
+          onDelete={(todo) => {
+            dispatch({
+              type: "delete",
+              payload: {
+                id: todo.id,
+              },
+            });
+          }}
+        />
         <h2>111</h2>
         <button>Clear finished</button>
       </div>
