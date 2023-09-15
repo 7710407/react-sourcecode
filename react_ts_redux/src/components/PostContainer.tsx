@@ -9,8 +9,8 @@ const PostContainer = () => {
     data: posts,
     error,
     isLoading,
-    refetch,
-  } = postAPI.useFetchAllPostsQuery(limit, {pollingInterval: 1000});
+    // refetch,
+  } = postAPI.useFetchAllPostsQuery(limit);
 
   useEffect(() => {
     setTimeout(() => {
@@ -20,7 +20,7 @@ const PostContainer = () => {
 
   return (
     <div>
-      <button onClick={() => refetch()}>Refetch</button>
+      {/* <button onClick={() => refetch()}>Refetch</button> */}
       <div className="post_list">
         {isLoading && <h1>Loading...</h1>}
         {error && <h1>Something went wrong</h1>}
