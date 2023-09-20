@@ -1,0 +1,38 @@
+{
+  "posts": [
+    {
+      "id": 4,
+      "title": "2222222",
+      "body": "typicode"
+    },
+    {
+      "id": 6,
+      "title": "json-server 6",
+      "body": "typicode"
+    },
+    {
+      "id": 7,
+      "title": "json-server 7",
+      "body": "typicode"
+    },
+    {
+      "title": "434",
+      "body": "333",
+      "id": 17
+    },
+    {
+      "title": "1111",
+      "body": "1111",
+      "id": 19
+    },
+    {
+      "title": "aaaaaaaaaaaa",
+      "body": "aaaaaaaaaaaa",
+      "id": 20
+    }
+  ],
+  "comments": [],
+  "profile": {
+    "name": "typicode"
+  }
+}
